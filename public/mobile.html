@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SmartCloset — Mando 📱</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/mobile.css">
+</head>
+
+<body>
+    <div class="header">
+        <h1><img src="img/logo.png" alt="Logo" class="app-logo"> SmartCloset</h1>
+        <p class="subtitle">Control remoto</p>
+    </div>
+    <div class="connection-status">
+        <span class="connection-dot" id="connectionDot"></span>
+    </div>
+    <div class="section">
+        <div class="section-title">Modo</div>
+        <div class="mode-toggle" id="modeToggle">
+            <button class="mode-btn active" data-mode="armario">🗄️ Armario</button>
+            <button class="mode-btn" data-mode="outfit">🪞 Probador</button>
+            <button class="mode-btn" data-mode="outfits">👗 Outfits</button>
+        </div>
+    </div>
+    <!-- Touchpad en el modo armario-->
+    <div class="section" id="touchpadSection">
+        <div class="section-title">Puntero remoto</div>
+        <div class="touchpad" id="touchpad">
+            <span class="touchpad-hint">Arrastra el dedo para mover el puntero</span>
+            <div class="touchpad-dot" id="touchDot"></div>
+        </div>
+        <button class="btn btn-danger mt-1" id="pointerClickBtn" style="width:100%;justify-content:center;">🖱️
+            Click</button>
+
+        <!-- Acciones del modo armario-->
+        <div id="accionesSection" class="section" style="padding: 10px 0 0 0; border: none; background: transparent;">
+            <div class="section-title"> Acciones</div>
+            <div class="action-grid">
+                <button class="btn btn-primary" id="filterBtn">Filtrar por voz</button>
+                <button class="btn btn-primary" id="clearFilterBtn"> Limpiar Filtros</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Acelerómetro en el modo probador -->
+    <div class="section" id="outfitSection" style="display:none;">
+        <div class="section-title"></div>
+        <div class="outfit-cat-bar">
+            <div class="outfit-cat-center">
+                <div class="outfit-cat-label" id="outfitCatLabel">👕 Superior</div>
+                <div class="outfit-cat-dots" id="outfitCatDots">
+                    <span class="cat-dot active"></span>
+                    <span class="cat-dot"></span>
+                    <span class="cat-dot"></span>
+                </div>
+            </div>
+        </div>
+        <!-- Botón de voz integrado en el probador -->
+        <div class="section" style="padding: 10px 0; border: none; background: transparent;">
+            <button class="btn btn-primary" id="voiceBtnOutfit" style="width:100%;justify-content:center;">🎤 Activar
+                Voz</button>
+        </div>
+        <!-- Visualizador de aceleración -->
+        <div class="accel-bubble-wrap">
+            <div class="accel-ring"></div>
+            <div class="accel-axis accel-axis-h"></div>
+            <div class="accel-axis accel-axis-v"></div>
+            <div class="accel-deadzone"></div>
+            <div class="accel-ball" id="accelBall"></div>
+            <div class="accel-feedback" id="accelFeedback"></div>
+        </div>
+        <p class="accel-status" id="accelStatus">Mueve el móvil para navegar</p>
+        <button class="btn btn-primary" id="accelPermBtn"
+            style="display:none;width:100%;justify-content:center;margin-top:8px;">🔓 Activar acelerómetro
+            (iOS)</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/mobile.js"></script>
+    <script>
+        // Mostrar botón de permiso iOS si hace falta
+        if (typeof DeviceMotionEvent !== 'undefined' &&
+            typeof DeviceMotionEvent.requestPermission === 'function') {
+            document.getElementById('accelPermBtn').style.display = 'block';
+        }
+    </script>
+    <button id="floatingCameraBtn" class="floating-btn" aria-label="Abrir Cámara"
+        onclick="window.location.href='camara.html'">
+        📷
+    </button>
+</body>
+
+</html>

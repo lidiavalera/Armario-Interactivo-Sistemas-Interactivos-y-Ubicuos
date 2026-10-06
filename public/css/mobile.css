@@ -1,0 +1,303 @@
+/* 
+ * mobile.css. Estilos para el mando remoto
+ */
+
+body {
+    padding: 16px;
+    padding-bottom: 40px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.section {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 14px;
+}
+
+/* Selector de modo (Armario, Probador, Outfits) */
+.mode-toggle {
+    display: flex;
+    gap: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #444;
+}
+
+.mode-btn {
+    flex: 1;
+    padding: 12px 8px;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #999;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.mode-btn.active {
+    background: #555;
+    color: #fff;
+}
+
+/* 
+ * Área del Touchpad para el control remoto del puntero.
+ */
+.touchpad {
+    width: 100%;
+    height: 220px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 2px dashed #444;
+    position: relative;
+    touch-action: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.touchpad-hint {
+    color: #666;
+    font-size: 0.85rem;
+    pointer-events: none;
+}
+
+.touchpad-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(255, 100, 100, 0.6);
+    position: absolute;
+    pointer-events: none;
+    display: none;
+    transform: translate(-50%, -50%);
+}
+
+/* Cuadrícula de botones para acciones rápidas (voz, filtros) */
+.action-grid {
+    display: grid;
+    gap: 10px;
+}
+
+.action-grid .btn {
+    justify-content: center;
+    width: 100%;
+    padding: 14px;
+    font-size: 0.9rem;
+}
+
+.scroll-grid {
+    display: grid;
+    grid-template-areas: ". up ." "left center right" ". down .";
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+.scroll-grid .btn {
+    justify-content: center;
+    padding: 16px;
+}
+
+
+#filterBtn {
+    width: 100%;
+}
+
+
+
+/* 
+ * Estilos para visualizar el acelerómetro en el probador
+ */
+.outfit-cat-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.outfit-cat-center {
+    flex: 1;
+    text-align: center;
+}
+
+.outfit-cat-label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #eee;
+    margin-bottom: 6px;
+}
+
+.outfit-cat-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.cat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #444;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.cat-dot.active {
+    background: #4fc3f7;
+    transform: scale(1.3);
+}
+
+.cat-nav-btn {
+    padding: 10px 14px;
+    font-size: 1.2rem;
+}
+
+.accel-instructions {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 12px;
+}
+
+.accel-instr-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.accel-icon {
+    font-size: 1rem;
+    color: #4fc3f7;
+    min-width: 24px;
+    text-align: center;
+}
+
+.accel-bubble-wrap {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 10px;
+}
+
+.accel-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(79, 195, 247, 0.25);
+    background: rgba(79, 195, 247, 0.04);
+}
+
+.accel-axis {
+    position: absolute;
+    background: rgba(79, 195, 247, 0.15);
+}
+
+.accel-axis-h {
+    top: 50%;
+    left: 8%;
+    width: 84%;
+    height: 1px;
+    transform: translateY(-50%);
+}
+
+.accel-axis-v {
+    left: 50%;
+    top: 8%;
+    height: 84%;
+    width: 1px;
+    transform: translateX(-50%);
+}
+
+.accel-deadzone {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px dashed rgba(79, 195, 247, 0.2);
+    transform: translate(-50%, -50%);
+}
+
+/* Representación visual de la aceleración (bolita moviéndose en un círculo) */
+.accel-ball {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fff, #4fc3f7);
+    box-shadow: 0 0 10px rgba(79, 195, 247, 0.8);
+    transform: translate(-50%, -50%);
+    transition: transform 0.06s linear;
+    pointer-events: none;
+}
+
+.accel-feedback {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #4fc3f7;
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.2s ease;
+    pointer-events: none;
+    white-space: nowrap;
+    text-align: center;
+    text-shadow: 0 0 8px rgba(79, 195, 247, 0.8);
+}
+
+.accel-status {
+    font-size: 0.72rem;
+    color: #666;
+    text-align: center;
+    min-height: 16px;
+}
+
+.prenda-nav-row {
+    display: flex;
+    gap: 8px;
+}
+
+.prenda-nav-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 11px;
+    font-size: 0.82rem;
+}
+
+/* Botón flotante para acceder a la cámara */
+.floating-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #4fc3f7;
+    color: white;
+    font-size: 28px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.floating-btn:active {
+    transform: scale(0.9);
+    background: #2ab5f6;
+}

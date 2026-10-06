@@ -1,0 +1,260 @@
+/* 
+ * styles.css. Definiciones globales y componentes compartidos
+ * Contiene el reset, tipografía base y estilos de tarjetas/botones.
+ */
+
+/* Reset básico */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    background: #1a1a2e;
+    color: #eee;
+    min-height: 100vh;
+    line-height: 1.4;
+}
+
+.app-logo {
+    height: 1.2em;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.tab-logo,
+.sidebar-logo {
+    height: 1em;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+h1 {
+    font-size: 1.5rem;
+}
+
+.subtitle {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.section-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+/* Botones base con variantes de color */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn:active {
+    opacity: 0.8;
+}
+
+.btn-primary {
+    background: #555;
+}
+
+.btn-success {
+    background: #2a7d4f;
+}
+
+.btn-danger {
+    background: #a33;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #555;
+    color: #ccc;
+}
+
+/* Indicadores visuales de estado */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.badge-connected {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+}
+
+.badge-disconnected {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+}
+
+/* 
+ * Tarjeta de prenda (Armario/Outfits).
+ * Incluye bordes reactivos para indicar el hover del puntero y selección.
+ */
+.garment-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 8px solid #00aeff;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.garment-card.pointer-hover {
+    border-color: #9ad1ff;
+}
+
+.garment-card.selected {
+    border-color: rgb(255, 96, 75);
+    box-shadow: 0 0 8px rgba(100, 100, 255, 0.3);
+}
+
+.garment-card .garment-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+}
+
+.garment-card .garment-image-placeholder {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Preview de Outfits Guardados */
+.garment-card .outfit-preview {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    align-content: center;
+    justify-content: center;
+}
+
+.garment-card .outfit-preview img {
+    width: 45%;
+    /* Aproximadamente 2x2 */
+    height: 45%;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.garment-card .garment-info {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.garment-card .garment-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.garment-card .garment-detail {
+    font-size: 0.7rem;
+    color: #999;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.garment-card .garment-detail .color-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid #555;
+}
+
+/* Indicador de conexión */
+.connection-status {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+}
+
+.connection-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 4px;
+}
+
+.connection-dot.online {
+    background: #2ecc71;
+}
+
+.connection-dot.offline {
+    background: #e74c3c;
+}
+
+/* Clases de utilidad para espaciado y visibilidad */
+.text-muted {
+    color: #999;
+}
+
+.mt-1 {
+    margin-top: 8px;
+}
+
+.mt-2 {
+    margin-top: 16px;
+}
+
+.mb-1 {
+    margin-bottom: 8px;
+}
+
+.mb-2 {
+    margin-bottom: 16px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Animaciones */
+.animate-fade-in {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

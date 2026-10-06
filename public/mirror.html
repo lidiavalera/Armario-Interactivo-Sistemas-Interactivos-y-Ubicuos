@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCloset — Espejo 🪞</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/mirror.css">
+</head>
+
+<body class="mirror-container">
+
+    <!-- Pantalla de bienvenida (reconocimiento facial) -->
+    <div id="welcomeScreen" class="welcome-screen">
+        <div class="welcome-content">
+            <h1 class="welcome-title">SmartCloset</h1>
+            <p class="welcome-subtitle">Mira a la cámara</p>
+
+            <!-- Webcam para reconocimiento facial -->
+            <div class="welcome-camera" id="welcomeCameraContainer"></div>
+
+            <!-- Mensaje de estado -->
+            <p class="welcome-status" id="welcomeStatus">Cargando modelo de reconocimiento...</p>
+        </div>
+
+        <!-- Mensaje de bienvenida (aparece al detectar la cara) -->
+        <div class="welcome-greeting hidden" id="welcomeGreeting">
+            <div class="greeting-text" id="greetingText">¡Bienvenida!</div>
+        </div>
+    </div>
+
+    <!-- Interfaz principal del espejo (oculta hasta login) -->
+    <div id="mirrorInterface" class="mirror-interface hidden">
+        <video id="mainMirrorVideo" autoplay playsinline muted></video>
+        <div id="pointer"></div>
+
+        <!-- Header con navegación -->
+        <header class="mirror-header">
+            <h1><img src="img/logo.png" alt="Logo" class="app-logo"> SmartCloset</h1>
+            <nav class="nav-tabs" id="navTabs">
+                <button class="nav-tab active" data-view="armario">🗄️ Armario</button>
+                <button class="nav-tab" data-view="outfit">🪞 Probador</button>
+                <button class="nav-tab" data-view="outfits">👗 Outfits</button>
+            </nav>
+            <div class="connection-status">
+                <span class="connection-dot" id="connectionDot"></span>
+                <span class="badge" id="connectionBadge">Conectando...</span>
+            </div>
+        </header>
+
+        <!-- Área principal -->
+        <main class="mirror-main" id="mirrorMain">
+
+            <!-- Vista: Armario / Catálogo -->
+            <div id="armario-view" class="view active">
+                <div class="section-title">Tu catálogo de prendas</div>
+                <div class="catalog-grid" id="catalogGrid">
+                    <!-- Las prendas se cargan dinámicamente -->
+                    <div class="view-placeholder animate-fade-in">
+                        <div class="icon">🗄️</div>
+                        <p>Tu armario está vacío. Usa la cámara para añadir prendas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modo Probador -->
+            <div id="outfit-view" class="view">
+                <!-- Contenedor del probador: vídeo + canvas superpuesto -->
+                <div class="ar-mirror-container">
+                    <canvas id="mirrorCanvas"></canvas>
+                    <div id="espejoStatus" class="espejo-status">⏳ Activando probador...</div>
+                    <!-- Contenedor de Ayuda (Mensaje + Botón) -->
+                    <div id="info-btn-container" class="info-btn-container hidden">
+                        <span id="info-voice-msg" class="info-voice-msg">activa la voz</span>
+                        <div id="info-btn" class="info-btn">i</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modo Cámara -->
+            <div id="camera-view" class="view">
+                <div class="view-placeholder animate-fade-in">
+                    <div class="icon">📷</div>
+                    <p>Abre la cámara desde tu móvil para capturar prendas</p>
+                </div>
+            </div>
+
+            <!-- Modo Outfits guardados -->
+            <div id="outfits-view" class="view">
+                <div style="display:flex; flex-direction:column; width:100%; height:100%; padding:20px;">
+                    <div class="section-title">Outfits guardados</div>
+                    <div class="catalog-grid" id="outfitsGrid">
+                        <div class="view-placeholder animate-fade-in">
+                            <div class="icon">💾</div>
+                            <p>Aún no has guardado ningún outfit.<br>Haz el signo OK 👌 con la mano en el probador.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </main>
+
+        <aside class="mirror-sidebar">
+            <!-- Info de la prenda seleccionada -->
+            <div class="sidebar-section" id="weather-section">
+                <div class="section-title">🌦️ Clima</div>
+                <div id="weatherContent">
+                    <p style="font-size: 0.85rem;">Obteniendo clima...</p>
+                </div>
+                <button id="climaFilterBtn" class="btn-clima-filter" disabled>🌦️ Filtrar por clima</button>
+            </div>
+            <div class="sidebar-section" id="detallesSection">
+                <div class="section-title">🏷️ Detalles</div>
+                <div id="garmentDetails">
+                    <p class="text-muted" style="font-size: 0.8rem;">Ninguna prenda seleccionada</p>
+                </div>
+            </div>
+            <div class="sidebar-section" id="recommendSection">
+                <button id="recommendBtn" class="btn-recommend">⭐ Recomendar por gustos</button>
+            </div>
+
+
+
+        </aside>
+
+        <!-- Pop-up de filtro por voz -->
+        <div id="filterOverlay" class="filter-overlay hidden">
+            <div class="filter-popup">
+                <h2>🎤 Filtrar por voz</h2>
+                <p class="filter-hint">Di las opciones en voz alta. Di «Fin» para aplicar.</p>
+
+                <div class="filter-field">
+                    <span class="filter-label">Tipo de prenda:</span>
+                    <span class="filter-value" id="filterTipo">—</span>
+                </div>
+                <div class="filter-field">
+                    <span class="filter-label">Color:</span>
+                    <span class="filter-value" id="filterColor">—</span>
+                </div>
+                <div class="filter-field">
+                    <span class="filter-label">Clima:</span>
+                    <span class="filter-value" id="filterClima">—</span>
+                </div>
+                <div class="filter-field">
+                    <span class="filter-label">Historial:</span>
+                    <span class="filter-value" id="filterHistorial">—</span>
+                </div>
+
+                <div class="filter-status" id="filterStatus">Esperando...</div>
+            </div>
+        </div>
+
+        <div id="robertoOverlay" class="roberto-overlay hidden">
+            <div class="roberto-popup">
+                <img src="img/roberto-no-fondo.png" alt="Roberto">
+            </div>
+        </div>
+
+        <!-- Overlay de Ayuda (Info) -->
+        <div id="info-overlay" class="info-overlay hidden">
+            <div class="info-content">
+                <img id="info-gif" src="" alt="Instrucción">
+            </div>
+        </div>
+
+        <!-- Aviso de Voz en Probador -->
+        <div id="voice-prompt-overlay" class="voice-prompt-overlay hidden">
+            <div class="voice-prompt-content">
+                <p>🎙️ Escuchando...</p>
+                <p class="voice-hint">Di "información" o "info" para abrir el panel de información</p>
+            </div>
+        </div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+        <script src="js/welcome.js"></script>
+        <script src="js/mirror.js"></script>
+        <script src="js/armario.js"></script>
+        <script src="js/outfits.js"></script>
+        <script type="module" src="js/probador.js"></script>
+
+</body>
+
+</html>

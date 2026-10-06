@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SmartCloset — Añadir Prenda 📷</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/camara.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>📷 Añadir Prenda</h1>
+        <p class="subtitle">Captura una foto de tu prenda</p>
+    </div>
+
+    <!-- Estado de conexión -->
+    <div class="connection-status">
+        <span class="connection-dot" id="connectionDot"></span>
+    </div>
+
+    <!-- Visor de cámara -->
+    <div class="section">
+        <div class="section-title">Cámara</div>
+        <div class="camera-container">
+            <video id="webcam" autoplay playsinline muted></video>
+            <canvas id="outputCanvas"></canvas>
+        </div>
+    </div>
+
+    <!-- Controles -->
+    <div class="section">
+        <div class="section-title">Controles</div>
+        <div class="camera-controls">
+            <!--Selector de dónde se va a guardar la prenda-->
+            <select name="almacenamiento" id="almacenamiento">
+                <option value="cajonTodos">Cajón</option>
+                <option value="perchaTodos">Percha</option>
+                <option value="cajonVerano">Cajón (armario verano)</option>
+                <option value="perchaVerano">Percha (armario verano)</option>
+                <option value="cajonInvierno">Cajón (armario invierno)</option>
+                <option value="perchaInvierno">Percha (armario invierno)</option>
+            </select>
+            <button class="btn btn-primary btn-capture" id="captureBtn">
+                📸 Capturar Foto
+            </button>
+            <button class="btn btn-outline btn-capture hidden" id="retryBtn">
+                🔄 Reintentar
+            </button>
+            <button class="btn btn-success btn-capture hidden" id="saveBtn">
+                ✅ Confirmar y Guardar
+            </button>
+        </div>
+    </div>
+
+    <!-- Estado -->
+    <div class="section">
+        <div class="section-title">Estado</div>
+        <div class="status-message" id="statusMsg">
+            Apunta la cámara a una prenda y pulsa «Capturar Foto»
+        </div>
+    </div>
+
+    <!-- Volver -->
+    <div style="text-align: center; margin-top: 10px;">
+        <button id="btnVolver" class="btn btn-outline">🔙 Volver al mando</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script type="module" src="js/camara.js"></script>
+</body>
+
+</html>

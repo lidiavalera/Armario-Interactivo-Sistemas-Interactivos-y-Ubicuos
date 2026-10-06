@@ -1,0 +1,822 @@
+/* 
+ * mirror.css. Estilos la interfaz del Espejo Inteligente
+ */
+
+body {
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* Ocultar barra de scroll en todos los contenedores*/
+::-webkit-scrollbar {
+    display: none;
+}
+
+* {
+    -ms-overflow-style: none;
+    /* IE y Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.app-logo {
+    height: 1.25em;
+    vertical-align: middle;
+    margin-right: 12px;
+}
+
+.tab-logo {
+    height: 1em;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.sidebar-logo {
+    height: 1.1em;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+/* 
+ * Estilos para la pantalla de bienvenida
+ */
+
+.welcome-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #0a0a1a, #1a1a3e, #0f0c29);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.8s ease;
+}
+
+.welcome-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    transition: opacity 0.5s ease;
+}
+
+.welcome-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.welcome-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 10px;
+}
+
+/* Cámara oculta (se usa internamente para la detección de las caras) */
+.welcome-camera {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.welcome-status {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 8px;
+    min-height: 24px;
+}
+
+/* Saludo de bienvenida */
+.welcome-greeting {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
+}
+
+.greeting-text {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #fff;
+    opacity: 0;
+    transform: scale(0.5);
+}
+
+.animate-greeting .greeting-text {
+    animation: greetingPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes greetingPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Transiciones */
+.fade-out {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+.fade-in {
+    animation: fadeInSmooth 0.6s ease forwards;
+}
+
+@keyframes fadeInSmooth {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 
+ * Estilos para la interfaz princial del espejo
+ */
+
+.mirror-interface {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    z-index: 1;
+}
+
+.mirror-container {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+}
+
+.mirror-header {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid #333;
+    background-color: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(10px);
+}
+
+.mirror-header .nav-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+}
+
+h1.mirror-header {
+    text-shadow: 0 0 10px #000;
+}
+
+.mirror-header .nav-tab {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #999;
+    background: transparent;
+}
+
+.mirror-header .nav-tab.active {
+    background: #555;
+    color: #fff;
+}
+
+/* Área central donde se renderizan las diferentes vistas (Armario, Probador, Outfits) */
+.mirror-main {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.mirror-main .view-placeholder {
+    text-align: center;
+    background-color: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.mirror-main .view-placeholder .icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+}
+
+.mirror-main .view-placeholder p {
+    font-size: 1rem;
+    max-width: 300px;
+}
+
+/* Barra lateral derecha para detalles, clima y recomendaciones */
+.mirror-sidebar {
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background-color: rgba(10, 10, 26, 0);
+}
+
+.sidebar-section {
+    background: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.section-title {
+    background-color: rgba(10, 10, 26, 0);
+    color: white;
+}
+
+.view {
+    display: none;
+}
+
+.view.active {
+    display: flex;
+}
+
+#armario-view,
+#outfits-view {
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+/* Cuadrícula para mostrar las prendas y los outfits guardados */
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-auto-rows: max-content;
+    align-content: start;
+    gap: 20px;
+    padding: 10px 0;
+    overflow-y: auto;
+    flex: 1;
+}
+
+#outfit-view {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+/* 
+ * Estilos para el probador
+ */
+
+.ar-mirror-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+}
+
+/* El vídeo está oculto, todo se dibuja sobre el canvas */
+.ar-mirror-container video {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ar-mirror-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Mensaje de estado del espejo (cargando / error) */
+.espejo-status {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.65);
+    color: #eee;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* Badge de categoría en tarjeta de prenda */
+.garment-category-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    font-size: 1.1rem;
+    line-height: 1;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+.garment-card {
+    position: relative;
+    background-color: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(10px);
+}
+
+#camera-view {
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* 
+ * Estilos de la representación visual del cursor controlado desde el mando remoto
+ */
+#pointer {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #ffffff, #4fc3f7);
+    box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.35), 0 0 18px rgba(79, 195, 247, 0.7);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    left: 50%;
+    top: 50%;
+    /* empieza en el centro */
+    transition: left 0.04s linear, top 0.04s linear;
+    z-index: 9999;
+}
+
+/* Animación de click del puntero (basado en touch-point de 05.touchEvent) */
+#pointer.pointer-click {
+    animation: pointerPulse 0.3s ease-out;
+}
+
+@keyframes pointerPulse {
+    0% {
+        box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.35), 0 0 18px rgba(79, 195, 247, 0.7);
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    50% {
+        box-shadow: 0 0 0 8px rgba(0, 255, 150, 0.4), 0 0 30px rgba(0, 255, 150, 0.6);
+        transform: translate(-50%, -50%) scale(1.5);
+    }
+
+    100% {
+        box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.35), 0 0 18px rgba(79, 195, 247, 0.7);
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Lista de detalles de prenda */
+.details-list {
+    list-style: none;
+    padding: 0;
+    font-size: 0.85rem;
+    line-height: 2;
+}
+
+/* Botón de eliminar prenda */
+.btn-delete {
+    width: 100%;
+    padding: 10px;
+    margin-top: 12px;
+    background: #a33;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-delete.confirming {
+    background: #ff4444;
+}
+
+/* Pop-up para la configuración de filtros mediante reconocimiento de voz */
+.filter-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.filter-popup {
+    background: #2a2a3e;
+    border: 1px solid #444;
+    border-radius: 16px;
+    padding: 30px 40px;
+    min-width: 350px;
+    text-align: center;
+}
+
+.filter-popup h2 {
+    margin-bottom: 8px;
+    font-size: 1.3rem;
+}
+
+.filter-hint {
+    color: #999;
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+}
+
+.filter-field {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
+    font-size: 0.9rem;
+}
+
+.filter-label {
+    color: #999;
+}
+
+.filter-value {
+    font-weight: 600;
+    color: #4fc3f7;
+}
+
+.filter-status {
+    margin-top: 16px;
+    font-size: 0.85rem;
+    color: #2ecc71;
+    font-weight: 600;
+}
+
+/* Tarjetas ocultadas por el filtro */
+.garment-card.filtered-out {
+    display: none;
+}
+
+
+/*Estetica de pestaña del tiempo*/
+.weather-info {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.recommendation-box {
+    background: rgba(79, 195, 247, 0.1);
+    border-left: 3px solid #4fc3f7;
+    padding: 10px;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: #e0e0e0;
+}
+
+/* fondo espejo*/
+#mainMirrorVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    transform: scaleX(-1);
+}
+
+/* Botón Filtrar por clima */
+.btn-clima-filter {
+    width: 100%;
+    padding: 10px;
+    margin-top: 12px;
+    background: linear-gradient(135deg, #1a6b8a, #4fc3f7);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+}
+
+.btn-clima-filter:hover:not(:disabled) {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.btn-clima-filter:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-clima-filter.active-filter {
+    background: linear-gradient(135deg, #d35400, #e67e22);
+    animation: pulseFilter 2s ease-in-out infinite;
+}
+
+@keyframes pulseFilter {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(230, 126, 34, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 6px rgba(230, 126, 34, 0);
+    }
+}
+
+/* Botón Recomendar por gustos */
+.btn-recommend {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, #6c3483, #a569bd);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+}
+
+.btn-recommend:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.btn-recommend.active-filter {
+    background: linear-gradient(135deg, #1a5276, #2e86c1);
+    animation: pulseFilter 2s ease-in-out infinite;
+}
+
+/* 
+ * Overlay de Roberto
+ */
+.roberto-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20000;
+    pointer-events: none;
+    background: transparent;
+}
+
+.roberto-popup {
+    width: 70%;
+    /* Tamaño grande */
+    max-width: 900px;
+}
+
+.roberto-popup img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Efecto Vanish para Roberto */
+.roberto-overlay.vanish-effect {
+    animation: vanishAnimation 5s forwards ease-in-out;
+}
+
+@keyframes vanishAnimation {
+    0% {
+        opacity: 0;
+        filter: blur(8px);
+    }
+
+    15% {
+        opacity: 0.8;
+        filter: blur(0px);
+    }
+
+    75% {
+        opacity: 0.8;
+        filter: blur(0px);
+    }
+
+    100% {
+        opacity: 0;
+        filter: blur(12px);
+    }
+}
+
+/* 
+ * Estilos para el sistema de ayuda (info)
+ */
+
+/* Botón de info visual en el espejo */
+/* Contenedor del mensaje + botón info (en la esquina superior derecha del probador) */
+.info-btn-container {
+    position: fixed;
+    top: 100px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 50000;
+    /* Por encima de todo */
+    pointer-events: none;
+}
+
+/* Texto "activa la voz" a la izquierda del botón */
+.info-voice-msg {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(8px);
+    padding: 6px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+    transition: color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Texto resaltado cuando pasan 20s sin actividad */
+.info-voice-msg.highlight {
+    color: #fff;
+    background: rgba(255, 193, 7, 0.25);
+    box-shadow: 0 0 12px rgba(255, 193, 7, 0.3);
+}
+
+.info-btn {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 3px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    font-family: 'serif';
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+}
+
+/* Botón iluminado en amarillo tras 20s de inactividad */
+.info-btn.illuminated {
+    border-color: #ffc107;
+    background: rgba(255, 193, 7, 0.25);
+    box-shadow: 0 0 18px rgba(255, 193, 7, 0.5), 0 0 40px rgba(255, 193, 7, 0.2);
+    animation: infoPulse 2s ease-in-out infinite;
+}
+
+@keyframes infoPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 18px rgba(255, 193, 7, 0.5), 0 0 40px rgba(255, 193, 7, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 24px rgba(255, 193, 7, 0.7), 0 0 50px rgba(255, 193, 7, 0.35);
+    }
+}
+
+/* Overlay "Escuchando..." en el probador */
+.voice-prompt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    backdrop-filter: blur(6px);
+}
+
+.voice-prompt-overlay.hidden {
+    display: none;
+}
+
+.voice-prompt-content {
+    text-align: center;
+    color: #fff;
+    background: rgba(30, 30, 50, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 30px 40px;
+}
+
+.voice-prompt-content p {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+}
+
+.voice-hint {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+}
+
+/* Overlay de información ayuda */
+.info-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 30000;
+    backdrop-filter: blur(15px);
+    transition: opacity 0.5s ease;
+}
+
+.info-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+    display: none;
+}
+
+.info-content {
+    text-align: center;
+    color: #fff;
+    max-width: 800px;
+    padding: 40px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(79, 195, 247, 0.4);
+    margin: 0 auto;
+    display: block;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.info-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    background: linear-gradient(to right, #fff, #4fc3f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.info-content p {
+    font-size: 1.4rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+}
